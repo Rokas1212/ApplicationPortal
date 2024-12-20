@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:5021/api/Profile';
 export interface ProfileDto {
     username: string;
     name: string;
-    lastname: string;
+    lastName: string;
     emailConfirmed: boolean;
     roles: string[];
 }

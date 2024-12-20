@@ -45,15 +45,15 @@ public class AuthController : ControllerBase
                 return BadRequest(new { message = "User Already Exists" });
             }
             
-            // Create Applicant Role If It Doesn't Exist
-            if ((await _roleManager.RoleExistsAsync(Roles.Applicant)) == false)
+            // Create Job Seeker Role If It Doesn't Exist
+            if ((await _roleManager.RoleExistsAsync(Roles.JobSeeker)) == false)
             {
                 var roleResult = await _roleManager
-                                        .CreateAsync(new IdentityRole(Roles.Applicant));
+                                        .CreateAsync(new IdentityRole(Roles.JobSeeker));
                 if (roleResult.Succeeded == false)
                 {
                     var roleErrors = roleResult.Errors.Select(e => e.Description);
-                    var message = $"Failed to create Applicant Role. Errors: {string.Join(",", roleErrors)}";
+                    var message = $"Failed to create {Roles.JobSeeker} Role. Errors: {string.Join(",", roleErrors)}";
                     _logger.LogError(message);
                     return BadRequest(message);
                 }
@@ -83,13 +83,13 @@ public class AuthController : ControllerBase
             }
             
             // Adding role to user
-            var addRoleToUserResult = await _userManager.AddToRoleAsync(user: user, role: Roles.Applicant);
+            var addRoleToUserResult = await _userManager.AddToRoleAsync(user: user, role: Roles.JobSeeker);
 
             // Check if role added to user
             if (addRoleToUserResult.Succeeded == false)
             {
                 var errors = addRoleToUserResult.Errors.Select(e => e.Description);
-                var message = $"Could not add {Roles.Applicant} role to user. Errors: {String.Join(",", errors)}";
+                var message = $"Could not add {Roles.JobSeeker} role to user. Errors: {String.Join(",", errors)}";
                 return BadRequest(message);
             }
 

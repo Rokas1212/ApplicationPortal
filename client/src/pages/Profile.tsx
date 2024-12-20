@@ -27,18 +27,17 @@ const Profile: React.FC = () => {
     }
 
     return (
-        <div>
+        <div style={{maxWidth: '400px', margin: 'auto', padding: '20px'}}>
             <h1>User Profile</h1>
-            <p><strong>Username:</strong> {profile.username}</p>
+            <p><strong>Email:</strong> {profile.username}</p>
             <p><strong>Name:</strong> {profile.name}</p>
-            <p><strong>Lastname:</strong> {profile.lastname}</p>
+            <p><strong>Last name:</strong> {profile.lastName}</p>
             {/*TODO: Implement EMAIL CONFIRMATION*/}
             <p><strong>Email Confirmed:</strong> {profile.emailConfirmed ? 'Yes' : 'No'}</p>
             <p><strong>Roles:</strong> {profile.roles.join(', ')}</p>
         </div>
     );
 };
-
 
 
 export default Profile;
