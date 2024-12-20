@@ -1,4 +1,5 @@
 using ApplicationPortal.Models;
+using ApplicationPortal.Models.DTOs;
 using ApplicationPortal.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -40,16 +41,34 @@ public class ProfileController : ControllerBase
 
             if (username == null)
             {
-                return Unauthorized();
+                return Unauthorized(new { message = "User is not authenticated." });
             }
             
-            var user = _userManager.FindByNameAsync(username);
+            // Fetch user details from the database
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+            {
+                return NotFound(new { message = "User profile not found." });
+            }
             
+            // Map the user data to a DTO or response object
+            var profile = new ProfileModel()
+            {
+                Name = user.Name,
+                LastName = user.LastName,
+                Username = user.Email,
+                Roles = await _userManager.GetRolesAsync(user), // Fetch user roles
+                EmailConfirmed = user.EmailConfirmed
+            };
+
+            // return profile data
+            return Ok(profile);
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            _logger.LogError($"Error fetching profile: {e.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while fetching the profile." });
         }
     }
 }
