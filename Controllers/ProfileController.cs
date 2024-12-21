@@ -112,7 +112,7 @@ public class ProfileController : ControllerBase
             var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
             await containerClient.CreateIfNotExistsAsync();
             
-            var uniqueFileName = $"{username}/CV_{Path.GetExtension(cvFile.FileName)}";
+            var uniqueFileName = $"{username}/CV_{Guid.NewGuid()}{Path.GetExtension(cvFile.FileName)}";
             var blobClient = containerClient.GetBlobClient(uniqueFileName);
             
             await using var stream = cvFile.OpenReadStream();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getProfile, ProfileDto } from '../services/profileService';
+import UploadCv from "../components/UploadCv.tsx";
 
 const Profile: React.FC = () => {
     const [profile, setProfile] = useState<ProfileDto | null>(null);
@@ -84,6 +85,7 @@ const Profile: React.FC = () => {
                     </div>
                 </div>
             </div>
+            <UploadCv/>
         </div>
     );
 };
