@@ -65,7 +65,7 @@ public class ProfileController : ControllerBase
             }
             
             // Map the user data to a DTO or response object
-            var profile = new ProfileModel()
+            var profile = new ProfileDto()
             {
                 Name = user.Name,
                 LastName = user.LastName,
@@ -91,19 +91,19 @@ public class ProfileController : ControllerBase
     /// <returns>Success message and CV URI</returns>
     [HttpPost("cv-upload")]
     [Authorize(Roles = Roles.JobSeeker)]
-    public async Task<IActionResult> UploadCv(IFormFile? cvFile)
+    public async Task<IActionResult> UploadCv([FromForm] UploadCvDto cvDto)
     {
         try
         {
             var username = User?.Identity?.Name;
             // Validate the file
-            if (cvFile == null || cvFile.Length == 0)
+            if (cvDto.CvFile == null || cvDto.CvFile.Length == 0)
             {
                 return BadRequest(new { message = "Invalid file. Please upload a valid CV." });
             }
             
             // Validate the file extension
-            if (Path.GetExtension(cvFile.FileName).ToLower() != ".pdf")
+            if (Path.GetExtension(cvDto.CvFile.FileName).ToLower() != ".pdf")
             {
                 return BadRequest(new { message = "Invalid file type. Please upload a PDF file." });
             }
@@ -117,16 +117,17 @@ public class ProfileController : ControllerBase
             var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
             await containerClient.CreateIfNotExistsAsync();
             
-            var uniqueFileName = $"{username}/CV_{Guid.NewGuid()}{Path.GetExtension(cvFile.FileName)}";
+            var uniqueFileName = $"{username}/CV_{Guid.NewGuid()}{Path.GetExtension(cvDto.CvFile.FileName)}";
             var blobClient = containerClient.GetBlobClient(uniqueFileName);
             
-            await using var stream = cvFile.OpenReadStream();
+            await using var stream = cvDto.CvFile.OpenReadStream();
             await blobClient.UploadAsync(stream, overwrite: true);
 
             var cv = new Cv
             {
                 CvFileUrl = blobClient.Uri.ToString(),
-                UserId = user.Id
+                UserId = user.Id,
+                FileName = cvDto.FileName
             };
             _dbContext.Cvs.Add(cv);
             await _dbContext.SaveChangesAsync();
@@ -156,10 +157,10 @@ public class ProfileController : ControllerBase
                 return NotFound(new { message = "User not found." });
             }
             
-            var cvs = user.Cvs.Select(cv => new CvDto
+            var cvs = user.Cvs.Select(cv => new FetchCvDto
             {
-                Id = cv.Id,
-                CvFileUrl = cv.CvFileUrl
+                CvFileUrl = cv.CvFileUrl,
+                FileName = cv.FileName
             }).ToList();
 
             return Ok(cvs);

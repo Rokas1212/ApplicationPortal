@@ -32,14 +32,14 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Registers a new user.
     /// </summary>
-    /// <param name="model">The signup request data.</param>
+    /// <param name="dto">The signup request data.</param>
     /// <returns>Returns a success message.</returns>
     [HttpPost("signup")]
-    public async Task<IActionResult> Signup([FromBody] SignupModel model)
+    public async Task<IActionResult> Signup([FromBody] SignupDto dto)
     {
         try
         {
-            var existingUser = await _userManager.FindByNameAsync(model.Email);
+            var existingUser = await _userManager.FindByNameAsync(dto.Email);
             if (existingUser != null)
             {
                 return BadRequest(new { message = "User Already Exists" });
@@ -61,17 +61,17 @@ public class AuthController : ControllerBase
 
             ApplicationUser user = new()
             {
-                Email = model.Email,
+                Email = dto.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Email,
-                Name = model.Name,
-                LastName = model.LastName,
+                UserName = dto.Email,
+                Name = dto.Name,
+                LastName = dto.LastName,
                 // TODO Implement email validation
                 EmailConfirmed = true
             };
             
             // Create User
-            var createUserResult = await _userManager.CreateAsync(user, model.Password);
+            var createUserResult = await _userManager.CreateAsync(user, dto.Password);
             
             // Check User Creation Result
             if (createUserResult.Succeeded == false)
@@ -105,20 +105,20 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Logs a user in
     /// </summary>
-    /// <param name="model">The login request data.</param>
+    /// <param name="dto">The login request data.</param>
     /// <returns>Returns a success message.</returns>
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginModel model)
+    public async Task<IActionResult> Login(LoginDto dto)
     {
         try
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
+            var user = await _userManager.FindByNameAsync(dto.Username);
             if (user == null)
             {
                 return BadRequest("This account does not exist");
             }
 
-            bool isValidPassword = await _userManager.CheckPasswordAsync(user, model.Password);
+            bool isValidPassword = await _userManager.CheckPasswordAsync(user, dto.Password);
             if (!isValidPassword)
             {
                 return Unauthorized();
@@ -166,7 +166,7 @@ public class AuthController : ControllerBase
 
             await _dbContext.SaveChangesAsync();
 
-            return Ok(new TokenModel()
+            return Ok(new TokenDto()
             {
                 AccessToken = token,
                 RefreshToken = refreshToken
@@ -181,15 +181,15 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("token/refresh")]
-    public async Task<IActionResult> Refresh(TokenModel model)
+    public async Task<IActionResult> Refresh(TokenDto dto)
     {
         try
         {
-            var principal = _tokenService.GetPrincipalFromExpiredToken(model.AccessToken);
+            var principal = _tokenService.GetPrincipalFromExpiredToken(dto.AccessToken);
             var username = principal.Identity?.Name;
 
             var tokenInfo = _dbContext.TokenInfos.SingleOrDefault(u => u.Username == username);
-            if (tokenInfo == null || tokenInfo.RefreshToken != model.RefreshToken || tokenInfo.ExpiredAt <= DateTime.UtcNow)
+            if (tokenInfo == null || tokenInfo.RefreshToken != dto.RefreshToken || tokenInfo.ExpiredAt <= DateTime.UtcNow)
             {
                 return BadRequest("Invalid Refresh Token");
             }
@@ -200,7 +200,7 @@ public class AuthController : ControllerBase
             tokenInfo.RefreshToken = newRefreshToken;
             await _dbContext.SaveChangesAsync();
 
-            return Ok(new TokenModel
+            return Ok(new TokenDto
             {
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken

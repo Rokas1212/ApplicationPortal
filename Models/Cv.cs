@@ -8,6 +8,10 @@ public class Cv
     [Key]
     public int Id { get; set; } // Primary Key
 
+    [MaxLength(50)]
+    [Required]
+    public string FileName { get; set; } = string.Empty; // Name for the CV file
+
     [MaxLength(512)]
     [Required]
     public string CvFileUrl { get; set; } = string.Empty; // URL for the uploaded CV file

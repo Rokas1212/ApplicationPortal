@@ -6,6 +6,12 @@ const UploadCv: React.FC = () => {
     const [cvFile, setCVFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [fileName, setFileName] = useState<string>('');
+
+    // Handler for the input change
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFileName(e.target.value);
+    };
 
     // Handle file input change
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +37,7 @@ const UploadCv: React.FC = () => {
 
         const formData = new FormData();
         formData.append("cvFile", cvFile);
-
+        formData.append("fileName", fileName ? fileName : cvFile.name);
         try {
             const response = await uploadCv(formData);
             setMessage(response.message || "File uploaded successfully!");
@@ -53,6 +59,15 @@ const UploadCv: React.FC = () => {
                 name="cvFile"
                 required={true}
                 onChange={handleFileChange}
+                bootstrapStyling="mb-3"
+            />
+            <FormInput
+                label="Enter File Name"
+                type="text"
+                name="fileName"
+                required={false}
+                value={fileName}
+                onChange={handleOnChange}
                 bootstrapStyling="mb-3"
             />
             <button

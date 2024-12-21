@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ApplicationPortal.Models.DTOs;
 
-public class ProfileModel
+public class ProfileDto
 {
     [Required] public string Username { get; set; } = string.Empty;
     [Required] public string Name { get; set; } = string.Empty;

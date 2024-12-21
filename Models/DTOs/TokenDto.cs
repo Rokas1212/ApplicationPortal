@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationPortal.Models.DTOs;
 
-public class TokenModel
+public class TokenDto
 {
     [Required]
     public string AccessToken { get; set; } = string.Empty;
