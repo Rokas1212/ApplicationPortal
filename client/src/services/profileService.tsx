@@ -11,14 +11,30 @@ export interface ProfileDto {
     roles: string[];
 }
 
+export interface FetchCvDto {
+    cvFileUrl: string;
+    fileName: string;
+}
+
+const token = `Bearer ${localStorage.getItem('accessToken')}`;
+
 export const getProfile = async (): Promise<ProfileDto> => {
     const response = await axios.get(`${BASE_URL}`, {
         headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            Authorization: token
         }
     });
     return response.data;
 }  
+
+export const getCvs = async (): Promise<FetchCvDto[]> => {
+    const response = await axios.get(`${BASE_URL}/my-cvs`, {
+        headers: {
+            Authorization: token
+        }
+    });
+    return response.data;
+}
 
 export const uploadCv = async (formData: FormData) => {
     const response = await axios.post(
@@ -26,10 +42,11 @@ export const uploadCv = async (formData: FormData) => {
         formData,
         {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Authorization: token,
               "Content-Type": "multipart/form-data",  
             },      
         }
     );
     return response.data;
 }
+
