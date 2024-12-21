@@ -8,8 +8,8 @@ interface UserInfoProps {
 const UserInfo: React.FC<UserInfoProps> = ({ profile }) => {
     return (
         <div className="card shadow">
-            <div className="card-header bg-primary text-white">
-                <h1 className="h3 mb-0">User Profile</h1>
+            <div className="card-header bg-light-subtle text-dark-emphasis">
+                <h1 className="h3 mb-0">Profile</h1>
             </div>
             <div className="card-body">
                 <div className="row mb-3">

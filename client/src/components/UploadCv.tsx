@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import {uploadCv} from "../services/profileService.tsx";
 import FormInput from "./Forminput.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUpload} from "@fortawesome/free-solid-svg-icons";
 
 const UploadCv: React.FC = () => {
     const [cvFile, setCVFile] = useState<File | null>(null);
@@ -51,33 +53,37 @@ const UploadCv: React.FC = () => {
     };
     
     return (
-        <div className="container mt-5">
-            <h2>Upload Your CV</h2>
-            <FormInput
-                label="Select CV File (PDF)"
-                type="file"
-                name="cvFile"
-                required={true}
-                onChange={handleFileChange}
-                bootstrapStyling="mb-3"
-            />
-            <FormInput
-                label="Enter File Name"
-                type="text"
-                name="fileName"
-                required={false}
-                value={fileName}
-                onChange={handleOnChange}
-                bootstrapStyling="mb-3"
-            />
-            <button
-                className="btn btn-primary"
-                onClick={handleUpload}
-                disabled={isUploading}
-            >
-                {isUploading ? "Uploading..." : "Upload CV"}
-            </button>
-            {message && <p className="mt-3">{message}</p>}
+        <div className="card shadow">
+            <div className="card-header bg-light-subtle text-dark-emphasis">
+                <h1 className="h3 mb-0">Upload Your CV</h1>
+            </div>
+            <div className="card-body">
+                <FormInput
+                    label="Select CV File (PDF)"
+                    type="file"
+                    name="cvFile"
+                    required={true}
+                    onChange={handleFileChange}
+                    bootstrapStyling="mb-3"
+                />
+                <FormInput
+                    label="Enter File Name"
+                    type="text"
+                    name="fileName"
+                    required={false}
+                    value={fileName}
+                    onChange={handleOnChange}
+                    bootstrapStyling="mb-3"
+                />
+                <button
+                    className="btn btn-sm btn-dark"
+                    onClick={handleUpload}
+                    disabled={isUploading}
+                >
+                    {isUploading ? "Uploading..." : <FontAwesomeIcon icon={faUpload}/>}
+                </button>
+                {message && <p className="mt-3">{message}</p>}
+            </div>
         </div>
     );
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import {FetchCvDto} from "../services/profileService.tsx";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 interface UserCvsProps {
     cvs: FetchCvDto[];
@@ -9,8 +11,8 @@ const UserCvs: React.FC<UserCvsProps> = ({ cvs }) => {
     
     return (
         <div className="card shadow">
-            <div className="card-header bg-primary text-white">
-                <h1 className="h3 mb-0">Your CVS</h1>
+            <div className="card-header bg-light-subtle text-dark-emphasis">
+                <h1 className="h3 mb-0">CVs</h1>
             </div>
             <div className="card-body">
                 {cvs.length === 0 ? (
@@ -25,9 +27,9 @@ const UserCvs: React.FC<UserCvsProps> = ({ cvs }) => {
                                     href={cv.cvFileUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="btn btn-sm btn-primary"
+                                    className="btn btn-sm btn-dark"
                                 >
-                                    Download
+                                    <FontAwesomeIcon icon={faDownload}/>
                                 </a>
                             </li>
                         ))}
