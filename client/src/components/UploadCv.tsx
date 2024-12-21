@@ -65,6 +65,7 @@ const UploadCv: React.FC = () => {
                 name="cvFile"
                 required={true}
                 onChange={handleFileChange}
+                bootstrapStyling="mb-3"
             />
             <button
                 className="btn btn-primary"

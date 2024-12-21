@@ -53,6 +53,7 @@ const Login: React.FC = () => {
                     value={formData.userName}
                     required={true}
                     onChange={handleChange}
+                    bootstrapStyling="mb-3"
                 />
                 <FormInput
                     label="Password"
@@ -61,8 +62,9 @@ const Login: React.FC = () => {
                     value={formData.password}
                     required={true}
                     onChange={handleChange}
+                    bootstrapStyling="mb-3"
                 />
-                <button type="submit">Login</button>
+                <button type="submit" className="btn btn-primary">Login</button>
             </form>
 
             {success && <p style={{ color: 'green' }}>{success}</p>}

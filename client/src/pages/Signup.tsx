@@ -51,6 +51,7 @@ const Signup: React.FC = () => {
                     value={formData.name}
                     required={true}
                     onChange={handleChange}
+                    bootstrapStyling="mb-3"
                 />
                 <FormInput
                     label="Last Name"
@@ -59,6 +60,7 @@ const Signup: React.FC = () => {
                     value={formData.lastName}
                     required={true}
                     onChange={handleChange}
+                    bootstrapStyling="mb-3"
                 />
                 <FormInput
                     label="Email"
@@ -67,6 +69,7 @@ const Signup: React.FC = () => {
                     value={formData.email}
                     required={true}
                     onChange={handleChange}
+                    bootstrapStyling="mb-3"
                 />
                 <FormInput
                     label="Password"
@@ -75,6 +78,7 @@ const Signup: React.FC = () => {
                     value={formData.password}
                     required={true}
                     onChange={handleChange}
+                    bootstrapStyling="mb-3"
                 />
                 <FormInput
                     label="Receive New Opportunities By Email?"
@@ -83,8 +87,9 @@ const Signup: React.FC = () => {
                     checked={formData.receiveEmails}
                     required={false}
                     onChange={handleChange}
+                    bootstrapStyling="mb-3 form-check"
                 />
-                <button type="submit">Signup</button>
+                <button type="submit" className="btn btn-primary">Signup</button>
             </form>
 
             {success && <p style={{ color: 'green' }}>{success}</p>}
