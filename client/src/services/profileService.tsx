@@ -19,3 +19,17 @@ export const getProfile = async (): Promise<ProfileDto> => {
     });
     return response.data;
 }  
+
+export const uploadCv = async (formData: FormData) => {
+    const response = await axios.post(
+        `${BASE_URL}/cv-upload`,
+        formData,
+        {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              "Content-Type": "multipart/form-data",  
+            },      
+        }
+    );
+    return response.data;
+}

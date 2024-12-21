@@ -1,13 +1,11 @@
 import React, {useState} from "react";
-import axios from 'axios';
+import {uploadCv} from "../services/profileService.tsx";
 import FormInput from "./Forminput.tsx";
 
 const UploadCv: React.FC = () => {
     const [cvFile, setCVFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    const BASE_URL = `${API_BASE_URL}/profile`;
 
     // Handle file input change
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,21 +33,11 @@ const UploadCv: React.FC = () => {
         formData.append("cvFile", cvFile);
 
         try {
-            const response = await axios.post(
-                `${BASE_URL}/cv-upload`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-
-            setMessage(response.data.message || "File uploaded successfully!");
+            const response = await uploadCv(formData);
+            setMessage(response.message || "File uploaded successfully!");
         } catch (error: any) {
             setMessage(
-                error.response?.data?.message || "An error occurred during upload."
+                error.response.message || "An error occurred during upload."
             );
         } finally {
             setIsUploading(false);
