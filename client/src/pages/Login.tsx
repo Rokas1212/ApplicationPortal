@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { LoginDto, login } from '../services/authService';
 import FormInput from '../components/FormInput';
 
 const Login: React.FC = () => {
+    const isAuthenticated = !!localStorage.getItem('accessToken');
+
+    useEffect(() => {
+        if(isAuthenticated)
+        {
+            window.location.href = '/profile';
+        }
+    }, [isAuthenticated]);
+    
     const [formData, setFormData] = useState<LoginDto>({
         userName: '',
         password: ''

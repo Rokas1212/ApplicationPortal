@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { SignupDto, signup } from '../services/authService';
 import FormInput from '../components/FormInput';
 
 const Signup: React.FC = () => {
+    const isAuthenticated = !!localStorage.getItem('accessToken');
+
+    useEffect(() => {
+        if(isAuthenticated)
+        {
+            window.location.href = '/profile';
+        }
+    }, [isAuthenticated]);
+    
     const [formData, setFormData] = useState<SignupDto>({
         name: '',
         lastName: '',
