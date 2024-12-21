@@ -7,6 +7,7 @@ using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace ApplicationPortal.Controllers;
@@ -84,9 +85,13 @@ public class ProfileController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Uploads PDF file (CV) to Azure Blob
+    /// </summary>
+    /// <returns>Success message and CV URI</returns>
     [HttpPost("cv-upload")]
     [Authorize(Roles = Roles.JobSeeker)]
-    public async Task<IActionResult> UploadCv([FromForm] IFormFile? cvFile)
+    public async Task<IActionResult> UploadCv(IFormFile? cvFile)
     {
         try
         {
@@ -134,5 +139,35 @@ public class ProfileController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while uploading the CV." });
         }
     }
-    
+
+    [HttpGet("my-cvs")]
+    [Authorize(Roles = Roles.JobSeeker)]
+    public async Task<IActionResult> GetCvs()
+    {
+        try
+        {
+            var username = User?.Identity?.Name;
+            var user = await _dbContext.Users
+                .Include(u => u.Cvs)
+                .FirstOrDefaultAsync(u => u.UserName == username);
+            
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+            
+            var cvs = user.Cvs.Select(cv => new CvDto
+            {
+                Id = cv.Id,
+                CvFileUrl = cv.CvFileUrl
+            }).ToList();
+
+            return Ok(cvs);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Error fetching CVS: {e.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while fetching your CVS." });
+        }
+    }
 }
