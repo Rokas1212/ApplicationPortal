@@ -16,8 +16,7 @@ public class ApplicationUser : IdentityUser
 
     [Required]
     public Boolean ReceiveEmails { get; set; } = false;
-    
-    [MaxLength(512)]
-    public string? CvFileUrl { get; set; } = String.Empty;
 
+    // Navigation property for user's CVs
+    public ICollection<Cv> Cvs { get; set; } = new List<Cv>();
 }

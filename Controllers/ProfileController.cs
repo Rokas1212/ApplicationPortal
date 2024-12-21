@@ -117,9 +117,14 @@ public class ProfileController : ControllerBase
             
             await using var stream = cvFile.OpenReadStream();
             await blobClient.UploadAsync(stream, overwrite: true);
-            
-            user.CvFileUrl = blobClient.Uri.ToString();
-            await _userManager.UpdateAsync(user);
+
+            var cv = new Cv
+            {
+                CvFileUrl = blobClient.Uri.ToString(),
+                UserId = user.Id
+            };
+            _dbContext.Cvs.Add(cv);
+            await _dbContext.SaveChangesAsync();
             
             return Ok(new { message = "CV uploaded successfully.", fileUrl = blobClient.Uri });
         }
