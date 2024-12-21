@@ -6,6 +6,8 @@ const UploadCv: React.FC = () => {
     const [cvFile, setCVFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const BASE_URL = `${API_BASE_URL}/profile`;
 
     // Handle file input change
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +36,7 @@ const UploadCv: React.FC = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:5021/api/profile/cv-upload",
+                `${BASE_URL}/cv-upload`,
                 formData,
                 {
                     headers: {

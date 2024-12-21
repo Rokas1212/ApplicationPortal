@@ -10,6 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var frontendBaseUrl = builder.Configuration["BaseIP"] + ":5173";
+var backendBaseUrl = builder.Configuration["BaseIP"] + ":5021";
+
 // Add services to the container.
 builder.Services.AddControllers(); // Add support for Web API controllers
 
@@ -17,7 +20,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(frontendBaseUrl)
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -58,8 +61,8 @@ builder.Services.AddAuthentication(options =>
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["JWT:ValidAudience"],
-            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            ValidAudience = frontendBaseUrl,
+            ValidIssuer = backendBaseUrl,
             ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:secret"] ?? throw new InvalidOperationException()))
         };
