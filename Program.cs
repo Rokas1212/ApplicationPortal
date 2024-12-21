@@ -2,6 +2,7 @@ using System.Text;
 using ApplicationPortal.Data;
 using ApplicationPortal.Models;
 using ApplicationPortal.Services;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,12 @@ builder.Services.AddCors(options =>
 
 // Database connection string
 var connectionString = builder.Configuration.GetConnectionString("default");
+
+// Azure blob connection string
+var blobConnectionString = builder.Configuration["AzureBlobStorage:ConnectionString"];
+
+// Register the BlobServiceClient
+builder.Services.AddSingleton(x => new BlobServiceClient(blobConnectionString));
 
 // Register database service
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
