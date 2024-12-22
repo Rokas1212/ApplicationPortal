@@ -49,7 +49,7 @@ const UploadCv: React.FC<UploadCvProps> = ({onUploadSuccess}) => {
             onUploadSuccess();
         } catch (error: any) {
             setMessage(
-                error.response.message || "An error occurred during upload."
+                error.response.data.message || "An error occurred during upload."
             );
         } finally {
             setIsUploading(false);

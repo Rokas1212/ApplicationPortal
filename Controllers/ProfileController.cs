@@ -74,7 +74,6 @@ public class ProfileController : ControllerBase
                 EmailConfirmed = user.EmailConfirmed
             };
             
-            _logger.LogInformation($"Container Name: {_containerName}");
             // return profile data
             return Ok(profile);
         }
@@ -96,6 +95,20 @@ public class ProfileController : ControllerBase
         try
         {
             var username = User?.Identity?.Name;
+            var user = await _dbContext.Users
+                .Include(u => u.Cvs)
+                .FirstOrDefaultAsync(u => u.UserName == username);
+            
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
+            if (user.Cvs.Count >= 3)
+            {
+                return BadRequest(new { message = "User can only have upto 3 CVs at a time" });
+            }
+            
             // Validate the file
             if (cvDto.CvFile == null || cvDto.CvFile.Length == 0)
             {
@@ -108,11 +121,6 @@ public class ProfileController : ControllerBase
                 return BadRequest(new { message = "Invalid file type. Please upload a PDF file." });
             }
             
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null)
-            {
-                return NotFound(new { message = "User not found." });
-            }
             
             var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
             await containerClient.CreateIfNotExistsAsync();
