@@ -51,3 +51,15 @@ export const uploadCv = async (formData: FormData) => {
     return response.data;
 }
 
+export const deleteCv = async (id: string) => {
+    return await axios.delete(
+        `${BASE_URL}/delete-cv`,
+        {
+            params: {id},
+            headers: {
+                Authorization: token,
+            },
+        }
+    ); 
+}
+

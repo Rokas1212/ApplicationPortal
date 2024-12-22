@@ -4,7 +4,10 @@ import FormInput from "./Forminput.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUpload} from "@fortawesome/free-solid-svg-icons";
 
-const UploadCv: React.FC = () => {
+interface UploadCvProps {
+    onUploadSuccess: () => void;
+}
+const UploadCv: React.FC<UploadCvProps> = ({onUploadSuccess}) => {
     const [cvFile, setCVFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
@@ -43,6 +46,7 @@ const UploadCv: React.FC = () => {
         try {
             const response = await uploadCv(formData);
             setMessage(response.message || "File uploaded successfully!");
+            onUploadSuccess();
         } catch (error: any) {
             setMessage(
                 error.response.message || "An error occurred during upload."

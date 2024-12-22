@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {getProfile, ProfileDto, FetchCvDto, getCvs} from '../services/profileService';
+import {getProfile, ProfileDto} from '../services/profileService';
 import UploadCv from "../components/UploadCv.tsx";
 import UserInfo from "../components/UserInfo.tsx";
 import Loading from "../components/Loading.tsx";
@@ -7,8 +7,9 @@ import UserCvs from "../components/UserCvs.tsx";
 
 const Profile: React.FC = () => {
     const [profile, setProfile] = useState<ProfileDto | null>(null);
-    const [cvs, setCvs] = useState<FetchCvDto[] | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [reloadFlag, setReloadFlag] = useState(false);
+    
     useEffect(() => {
         const fetchProfile = async () => {
           try {
@@ -20,24 +21,18 @@ const Profile: React.FC = () => {
           }
         };
         
-        const fetchCvs = async () => {
-            try{
-                const data = await getCvs();
-                setCvs(data);
-                setError(null);
-            } catch (err: any) {
-                setError(err.response?.data?.message || 'Failed to fetch CVS')
-            }
-        }
         fetchProfile();
-        fetchCvs();
     }, []);
+
+    const triggerReload = () => {
+        setReloadFlag(prev => !prev);
+    };
     
     if (error) {
         return <p style={{ color: 'red' }}>{error}</p>;
     }
     
-    if(!profile || !cvs) {
+    if(!profile) {
         return <Loading/>;
     }
 
@@ -48,13 +43,13 @@ const Profile: React.FC = () => {
                     <UserInfo profile={profile}/>
                 </div>
                 <div className="col-md-6">
-                    <UserCvs cvs={cvs}/>
+                    <UserCvs reloadFlag={reloadFlag} />
                 </div>
             </div>
             <hr/>
             <div className="row">
                 <div className="col-md-6">
-                    <UploadCv/>
+                    <UploadCv onUploadSuccess={triggerReload}/>
                 </div>
             </div>
         </div>

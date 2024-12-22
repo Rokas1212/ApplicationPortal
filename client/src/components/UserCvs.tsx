@@ -1,13 +1,48 @@
-import React from 'react';
-import {FetchCvDto} from "../services/profileService.tsx";
+import React, {useEffect, useState} from 'react';
+import {deleteCv, FetchCvDto, getCvs} from "../services/profileService.tsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faDownload, faTrash} from '@fortawesome/free-solid-svg-icons';
+import Loading from "./Loading.tsx";
 
 interface UserCvsProps {
-    cvs: FetchCvDto[];
+    reloadFlag: boolean;
 }
-const UserCvs: React.FC<UserCvsProps> = ({ cvs }) => {
+
+const UserCvs: React.FC<UserCvsProps> = ({reloadFlag}) => {
+    const [cvs, setCvs] = useState<FetchCvDto[] | null>(null);
+    const [error, setError] = useState<string | null>(null);
     
+    useEffect(() => {
+        const fetchCvs = async () => {
+            try{
+                const data = await getCvs();
+                setCvs(data);
+                setError(null);
+            } catch (err: any) {
+                setError(err.response?.data?.message || 'Failed to fetch CVS')
+            }
+        }
+        fetchCvs();
+    }, [reloadFlag]);
+
+    const handleDeleteCv = async (cvId: string) => {
+        try {
+            await deleteCv(cvId);
+            // Update the state to remove the deleted CV
+            setCvs((prevCvs) => prevCvs?.filter((cv) => cv.id !== cvId) || null);
+            console.log('CV deleted successfully');
+        } catch (error) {
+            console.error('Failed to delete CV', error);
+        }
+    };
+
+    if (error) {
+        return <p style={{ color: 'red' }}>{error}</p>;
+    }
+    
+    if(!cvs) {
+        return <Loading/>;
+    }
     
     return (
         <div className="card shadow h-100">
@@ -15,11 +50,11 @@ const UserCvs: React.FC<UserCvsProps> = ({ cvs }) => {
                 <h1 className="h3 mb-0">CVs</h1>
             </div>
             <div className="card-body">
-                {cvs.length === 0 ? (
+                {cvs?.length === 0 ? (
                     <p>No CVs uploaded yet.</p>
                 ) : (
                     <ul className="list-group">
-                        {cvs.map((cv, index) => (
+                        {cvs?.map((cv, index) => (
                             <li className="list-group-item d-flex justify-content-between align-items-center"
                                 key={index}>
                                 <span>{cv.fileName}</span>
@@ -34,8 +69,7 @@ const UserCvs: React.FC<UserCvsProps> = ({ cvs }) => {
                                     </a>
                                     <a
                                         className="btn btn-sm btn-danger"
-                                        //TODO Implement DELETE
-                                        onClick={() => {}}
+                                        onClick={() => handleDeleteCv(cv.id)}
                                     >
                                         <FontAwesomeIcon icon={faTrash}/>
                                     </a>
