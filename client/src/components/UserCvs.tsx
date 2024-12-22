@@ -37,11 +37,29 @@ const UserCvs: React.FC<UserCvsProps> = ({reloadFlag}) => {
     };
 
     if (error) {
-        return <p style={{ color: 'red' }}>{error}</p>;
+        return (
+            <div className="card shadow h-100">
+                <div className="card-header bg-light-subtle text-dark-emphasis">
+                    <h1 className="h3 mb-0">CVs</h1>
+                </div>
+                <div className="card-body">
+                    <p style={{ color: 'red' }}>{error}</p>
+                </div>
+            </div>
+        );
     }
     
     if(!cvs) {
-        return <Loading/>;
+        return (
+            <div className="card shadow h-100">
+                <div className="card-header bg-light-subtle text-dark-emphasis">
+                    <h1 className="h3 mb-0">CVs</h1>
+                </div>
+                <div className="card-body">
+                    <Loading/>
+                </div>
+            </div>
+        );
     }
     
     return (
