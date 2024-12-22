@@ -17,6 +17,8 @@ public class ApplicationUser : IdentityUser
     [Required]
     public Boolean ReceiveEmails { get; set; } = false;
 
-    // Navigation property for user's CVs
+    // Navigation properties
     public ICollection<Cv> Cvs { get; set; } = new List<Cv>();
+    
+    public Employer? Employer { get; set; }
 }
