@@ -16,6 +16,10 @@ public class Cv
     [Required]
     public string CvFileUrl { get; set; } = string.Empty; // URL for the uploaded CV file
 
+    [MaxLength(512)]
+    [Required]
+    public string ContainerPath { get; set; } = string.Empty; // Path for later use deleting the CV from Azure 
+        
     [Required]
     public string UserId { get; set; } = string.Empty; // Foreign Key to ApplicationUser
 

@@ -135,7 +135,8 @@ public class ProfileController : ControllerBase
             {
                 CvFileUrl = blobClient.Uri.ToString(),
                 UserId = user.Id,
-                FileName = cvDto.FileName
+                FileName = cvDto.FileName,
+                ContainerPath = uniqueFileName
             };
             _dbContext.Cvs.Add(cv);
             await _dbContext.SaveChangesAsync();
@@ -205,18 +206,9 @@ public class ProfileController : ControllerBase
             
             // Initialize the BlobClient to delete the file from Azure Blob Storage
             var blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
-            
-            // Extract the URI
-            var uri = new Uri(cv.CvFileUrl);
-
-            // Decode the path and remove the leading '/'
-            var decodedPath = Uri.UnescapeDataString(uri.AbsolutePath.Substring(1));
-
-            // Remove the container name to get the relative blob name
-            var blobName = decodedPath.Substring(containerName.Length + 1);
 
             // Get the BlobClient
-            var blobClient = blobContainerClient.GetBlobClient(blobName);
+            var blobClient = blobContainerClient.GetBlobClient(cv.ContainerPath);
 
             // Delete the blob
             await blobClient.DeleteIfExistsAsync();
@@ -231,15 +223,5 @@ public class ProfileController : ControllerBase
             _logger.LogError($"Error deleting CV: {e.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while deleting your CV." });
         }
-    }
-    
-    
-    // helpers
-    
-    // method to fetch CV using ID
-    private Cv getCvById(int id)
-    {
-        var cv = _dbContext.Cvs.FirstOrDefault(cv => cv.Id == id);
-        return cv;
     }
 }
