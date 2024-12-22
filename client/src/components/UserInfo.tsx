@@ -1,11 +1,32 @@
-import React from 'react';
-import { ProfileDto } from '../services/profileService';
+import React, {useEffect, useState} from 'react';
+import {getProfile, ProfileDto} from '../services/profileService';
+import Loading from "./Loading.tsx";
 
-interface UserInfoProps {
-    profile: ProfileDto;
-}
+const UserInfo: React.FC = () => {
+    const [profile, setProfile] = useState<ProfileDto | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const data = await getProfile();
+                setProfile(data);
+                setError(null);
+            }  catch (err: any) {
+                setError(err.response?.data?.message || 'Failed to fetch user profile')
+            }
+        };
 
-const UserInfo: React.FC<UserInfoProps> = ({ profile }) => {
+        fetchProfile();
+    }, []);
+
+    if (error) {
+        return <p style={{ color: 'red' }}>{error}</p>;
+    }
+
+    if(!profile) {
+        return <Loading/>;
+    }
+    
     return (
         <div className="card shadow h-100">
             <div className="card-header bg-light-subtle text-dark-emphasis">
