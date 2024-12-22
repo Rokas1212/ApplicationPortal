@@ -20,5 +20,5 @@ public class ApplicationUser : IdentityUser
     // Navigation properties
     public ICollection<Cv> Cvs { get; set; } = new List<Cv>();
     
-    public Employer? Employer { get; set; }
+    public ICollection<EmployerCompany> EmployerCompanies { get; set; } = new List<EmployerCompany>();
 }

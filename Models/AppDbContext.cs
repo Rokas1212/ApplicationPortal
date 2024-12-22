@@ -12,7 +12,9 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<TokenInfo> TokenInfos { get; set; }
     public DbSet<Cv> Cvs { get; set; }
     
-    public DbSet<Employer> Employers { get; set; }
+    public DbSet<Company> Companies { get; set; }
+    
+    public DbSet<EmployerCompany> EmployerCompanies { get; set; }
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -25,11 +27,18 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(c => c.UserId) // Foreign key in the Cv table
             .OnDelete(DeleteBehavior.Cascade); // Delete CVs when user is deleted
         
-        // one-to-one relationship between Employer and ApplicationUser
-        builder.Entity<Employer>()
-            .HasOne(e => e.User) // Each employer has one ApplicationUser
-            .WithOne(u => u.Employer) // Each ApplicationUser can have one Employer
-            .HasForeignKey<Employer>(e => e.Id) // Employer ID matches ApplicationUser ID
-            .OnDelete(DeleteBehavior.Cascade); // Delete Employer when ApplicationUser is deleted
+        // configure employerCompany as a join table
+        builder.Entity<EmployerCompany>()
+            .HasKey(ec => new { ec.EmployerId, ec.CompanyId });
+
+        builder.Entity<EmployerCompany>()
+            .HasOne(ec => ec.Employer)
+            .WithMany(e => e.EmployerCompanies)
+            .HasForeignKey(uc => uc.EmployerId);
+
+        builder.Entity<EmployerCompany>()
+            .HasOne(ec => ec.Company)
+            .WithMany(c => c.EmployerCompanies)
+            .HasForeignKey(ec => ec.CompanyId);
     }
 }
