@@ -14,6 +14,7 @@ export interface ProfileDto {
 export interface FetchCvDto {
     cvFileUrl: string;
     fileName: string;
+    id: string;
 }
 
 const token = `Bearer ${localStorage.getItem('accessToken')}`;

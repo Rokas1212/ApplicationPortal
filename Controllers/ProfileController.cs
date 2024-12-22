@@ -160,7 +160,8 @@ public class ProfileController : ControllerBase
             var cvs = user.Cvs.Select(cv => new FetchCvDto
             {
                 CvFileUrl = cv.CvFileUrl,
-                FileName = cv.FileName
+                FileName = cv.FileName,
+                Id = cv.Id
             }).ToList();
 
             return Ok(cvs);
@@ -170,5 +171,67 @@ public class ProfileController : ControllerBase
             _logger.LogError($"Error fetching CVS: {e.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while fetching your CVS." });
         }
+    }
+
+    [Authorize(Roles = Roles.Admin + "," + Roles.JobSeeker)]
+    [HttpDelete("delete-cv")]
+    public async Task<IActionResult> DeleteCv([FromQuery] int id)
+    {
+        try
+        {
+            var username = User.Identity?.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            var cv = _dbContext.Cvs.FirstOrDefault(cv => cv.Id == id);
+
+            if (cv == null)
+            {
+                return NotFound(new { message = "CV with the given ID does not exist." });
+            }
+
+            if (cv.UserId != user?.Id && !User.IsInRole(Roles.Admin))
+            {
+                return Unauthorized("You can not delete this CV.");
+            }
+            
+            var containerName = "cv-uploads";
+            
+            // Initialize the BlobClient to delete the file from Azure Blob Storage
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+            
+            // Extract the URI
+            var uri = new Uri(cv.CvFileUrl);
+
+            // Decode the path and remove the leading '/'
+            var decodedPath = Uri.UnescapeDataString(uri.AbsolutePath.Substring(1));
+
+            // Remove the container name to get the relative blob name
+            var blobName = decodedPath.Substring(containerName.Length + 1);
+
+            // Get the BlobClient
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+
+            // Delete the blob
+            await blobClient.DeleteIfExistsAsync();
+            
+            _dbContext.Cvs.Remove(cv);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new { message = "CV deleted successfully." });
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Error deleting CV: {e.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while deleting your CV." });
+        }
+    }
+    
+    
+    // helpers
+    
+    // method to fetch CV using ID
+    private Cv getCvById(int id)
+    {
+        var cv = _dbContext.Cvs.FirstOrDefault(cv => cv.Id == id);
+        return cv;
     }
 }
