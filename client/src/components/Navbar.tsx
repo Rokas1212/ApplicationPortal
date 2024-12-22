@@ -12,11 +12,11 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-transparent sticky-top border-bottom border-dark">
+        <nav className="navbar navbar-expand-lg navbar-light bg-dark sticky-top border-bottom border-dark">
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/">ApplicationPortal</Link>
+                <Link className="navbar-brand text-light" to="/">ApplicationPortal</Link>
                 <button
-                    className="navbar-toggler"
+                    className="navbar-toggler bg-light"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarNavAltMarkup"
