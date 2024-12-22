@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-body-tertiary sticky-top">
+        <nav className="navbar navbar-expand-lg navbar-light bg-transparent sticky-top border-bottom border-dark">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">ApplicationPortal</Link>
                 <button
@@ -28,24 +28,26 @@ const Navbar: React.FC = () => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
+                        <NavLink className="btn btn-outline-secondary text-light mx-1" to="/">
+                            Home
+                        </NavLink>
                         {!isAuthenticated ? (
                             <>
-                                <NavLink className="nav-link" to="/login">
+                                <NavLink className="btn btn-outline-secondary text-light mx-1" to="/login">
                                     Login
                                 </NavLink>
-                                <NavLink className="nav-link" to="/signup">
+                                <NavLink className="btn btn-outline-secondary text-light mx-1" to="/signup">
                                     Signup
                                 </NavLink>
                             </>
                         ) : (
                             <>
-                                <NavLink className="nav-link" to="/profile">
+                                <NavLink className="btn btn-outline-secondary text-light mx-1" to="/profile">
                                     Profile
                                 </NavLink>
                                 <button
-                                    className="nav-link btn btn-link"
+                                    className="btn btn-outline-secondary text-light mx-1"
                                     onClick={handleLogout}
-                                    style={{ padding: 0, border: 'none', background: 'none' }}
                                 >
                                     Logout
                                 </button>

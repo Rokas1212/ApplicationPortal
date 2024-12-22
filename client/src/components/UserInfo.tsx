@@ -7,7 +7,7 @@ interface UserInfoProps {
 
 const UserInfo: React.FC<UserInfoProps> = ({ profile }) => {
     return (
-        <div className="card shadow">
+        <div className="card shadow h-100">
             <div className="card-header bg-light-subtle text-dark-emphasis">
                 <h1 className="h3 mb-0">Profile</h1>
             </div>
@@ -32,13 +32,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ profile }) => {
                 </div>
                 <div className="row mb-3">
                     <div className="col-sm-3">
-                        <strong>Email Confirmed:</strong>
+                        <strong>Email:</strong>
                     </div>
                     <div className="col-sm-9">
                         {profile.emailConfirmed ? (
-                            <span className="badge bg-success">Yes</span>
+                            <span className="badge bg-success">Confirmed</span>
                         ) : (
-                            <span className="badge bg-danger">No</span>
+                            <span className="badge bg-danger">Unconfirmed</span>
                         )}
                     </div>
                 </div>

@@ -53,7 +53,7 @@ const UploadCv: React.FC = () => {
     };
     
     return (
-        <div className="card shadow">
+        <div className="card shadow h-100">
             <div className="card-header bg-light-subtle text-dark-emphasis">
                 <h1 className="h3 mb-0">Upload Your CV</h1>
             </div>

@@ -43,12 +43,16 @@ const Profile: React.FC = () => {
 
     return (
         <div className="container mt-5">
-            <UserInfo profile={profile}/>
-            <hr/>
             <div className="row">
+                <div className="col-md-6">
+                    <UserInfo profile={profile}/>
+                </div>
                 <div className="col-md-6">
                     <UserCvs cvs={cvs}/>
                 </div>
+            </div>
+            <hr/>
+            <div className="row">
                 <div className="col-md-6">
                     <UploadCv/>
                 </div>
