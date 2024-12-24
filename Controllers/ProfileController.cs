@@ -17,7 +17,7 @@ public class ProfileController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly ILogger<AuthController> _logger;
+    private readonly ILogger<ProfileController> _logger;
     private readonly ITokenService _tokenService;
     private readonly AppDbContext _dbContext;
     private readonly BlobServiceClient _blobServiceClient;
