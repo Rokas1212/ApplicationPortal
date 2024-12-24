@@ -26,7 +26,7 @@ public class ProfileController : ControllerBase
 
     public ProfileController(UserManager<ApplicationUser> userManager, 
                             RoleManager<IdentityRole> roleManager, 
-                            ILogger<AuthController> logger,
+                            ILogger<ProfileController> logger,
                             ITokenService tokenService, 
                             AppDbContext dbContext, 
                             BlobServiceClient blobServiceClient, 
