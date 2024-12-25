@@ -19,7 +19,7 @@ const UserCvs: React.FC<UserCvsProps> = ({reloadFlag}) => {
                 setCvs(data);
                 setError(null);
             } catch (err: any) {
-                setError(err.response?.data?.message || 'Failed to fetch CVS')
+                setError(err.response?.data?.message || 'Failed to fetch CVS');
             }
         }
         fetchCvs();
