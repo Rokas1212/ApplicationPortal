@@ -9,6 +9,7 @@ export interface FetchCompanyDto {
     companyAddress: string;
     websiteUrl: string;
     companyLogoUrl: string;
+    description: string;
 }
 
 export const fetchCompanies = async (): Promise<FetchCompanyDto[]> => {

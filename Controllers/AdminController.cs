@@ -73,7 +73,8 @@ public class AdminController : ControllerBase
                 CompanyName = dto.CompanyName,
                 CompanyAddress = $"{dto.Address}, {dto.City}, {dto.PostalCode}, {dto.Country}",
                 CompanyLogoUrl = logoUrl,
-                WebsiteUrl = dto.WebsiteUrl
+                WebsiteUrl = dto.WebsiteUrl,
+                Description = dto.Description
             };
 
             // Save to database

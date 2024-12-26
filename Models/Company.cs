@@ -14,6 +14,9 @@ namespace ApplicationPortal.Models
         [Required]
         public string CompanyAddress { get; set; } = string.Empty;
 
+        [Required]
+        public string Description { get; set; } = string.Empty;
+
         public string? WebsiteUrl { get; set; } = string.Empty;
         
         public string? CompanyLogoUrl { get; set; } = string.Empty;

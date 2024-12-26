@@ -33,7 +33,8 @@ public class CompanyController : ControllerBase
                     CompanyName = c.CompanyName,
                     CompanyAddress = c.CompanyAddress,
                     CompanyLogoUrl = c.CompanyLogoUrl,
-                    WebsiteUrl = c.WebsiteUrl
+                    WebsiteUrl = c.WebsiteUrl,
+                    Description = c.Description
                     
                 })
                 .ToListAsync();
