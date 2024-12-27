@@ -3,6 +3,7 @@ using ApplicationPortal.Models;
 using ApplicationPortal.Models.DTOs;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,16 +19,89 @@ public class AdminController : ControllerBase
     private readonly BlobServiceClient _blobServiceClient;
     private readonly IConfiguration _configuration;
     private readonly string? _containerName;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AdminController(AppDbContext dbContext, ILogger<AdminController> logger, BlobServiceClient blobServiceClient, IConfiguration configuration)
+    public AdminController(AppDbContext dbContext, ILogger<AdminController> logger, BlobServiceClient blobServiceClient, IConfiguration configuration,
+                           UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _dbContext = dbContext;
         _logger = logger;
         _blobServiceClient = blobServiceClient;
         _configuration = configuration;
         _containerName = _configuration["AzureBlobStorage:LogoContainer"];
+        _userManager = userManager;
+        _roleManager = roleManager;
     }
 
+    [HttpPost("create-user")]
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
+    {
+        try
+        {
+            var existingUser = await _userManager.FindByNameAsync(dto.Email);
+            if (existingUser != null)
+            {
+                return BadRequest(new { message = "User Already Exists" });
+            }
+            
+            // Create Role If It Doesn't Exist
+            if ((await _roleManager.RoleExistsAsync(dto.Role.ToString()) == false))
+            {
+                var roleResult = await _roleManager
+                                        .CreateAsync(new IdentityRole(dto.Role.ToString()));
+                if (roleResult.Succeeded == false)
+                {
+                    var roleErrors = roleResult.Errors.Select(e => e.Description);
+                    var message = $"Failed to create {dto.Role} Role. Errors: {string.Join(",", roleErrors)}";
+                    _logger.LogError(message);
+                    return BadRequest(message);
+                }
+            }
+
+            ApplicationUser user = new()
+            {
+                Email = dto.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = dto.Email,
+                Name = dto.Name,
+                LastName = dto.LastName,
+                // TODO Implement email validation
+                EmailConfirmed = true
+            };
+            
+            // Create User
+            var createUserResult = await _userManager.CreateAsync(user, dto.Password);
+            
+            // Check User Creation Result
+            if (createUserResult.Succeeded == false)
+            {
+                var errors = createUserResult.Errors.Select(e => e.Description);
+                var message = $"Failed to create user. Errors: {string.Join(",", errors)}";
+                _logger.LogError(message);
+                return BadRequest(message);
+            }
+            
+            // Adding role to user
+            var addRoleToUserResult = await _userManager.AddToRoleAsync(user: user, role: dto.Role.ToString());
+
+            // Check if role added to user
+            if (addRoleToUserResult.Succeeded == false)
+            {
+                var errors = addRoleToUserResult.Errors.Select(e => e.Description);
+                var message = $"Could not add {dto.Role} role to user. Errors: {String.Join(",", errors)}";
+                return BadRequest(message);
+            }
+
+            return CreatedAtAction(nameof(CreateUser), new {message = $"User with this username: {user.UserName} created successfully"});
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+    
     [HttpPost("create-company")]
      public async Task<IActionResult> CreateCompany([FromForm] CreateCompanyDto dto)
      {

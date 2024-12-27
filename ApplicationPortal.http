@@ -1,6 +1,2 @@
-@ApplicationPortal_HostAddress = http://192.168.1.240:5021
-
-GET {{ApplicationPortal_HostAddress}}/weatherforecast/
-Accept: application/json
-
+@ApplicationPortal_HostAddress = http://10.151.22.94:5021
 ###
