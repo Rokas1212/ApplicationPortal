@@ -46,6 +46,7 @@ const Login: React.FC = () => {
         <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px' }}>
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
+                {/* Email */}
                 <FormInput
                     label="Email"
                     type="email"
@@ -55,6 +56,8 @@ const Login: React.FC = () => {
                     onChange={handleChange}
                     bootstrapStyling="mb-3"
                 />
+                
+                {/* Password */}
                 <FormInput
                     label="Password"
                     type="password"
