@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import FormInput from "../components/Forminput";
+import {signup} from "../services/authService.tsx";
+import {createUser} from "../services/adminService.tsx";
 
 export enum Roles {
     Admin = "Admin",
@@ -34,14 +36,20 @@ const Admin: React.FC = () => {
         setFormData({...formData, role: value as Roles});
     };
 
-    const handleCreateUser = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        alert(`User Created:${formData.email} (DUMMY MESSAGE)`);
+        try {
+            const response = await createUser(formData);
+            alert(response.message); // Display success message
+        } catch (err: any) {
+            alert("failed");
+        }
     };
+
 
     return (
         <div style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
-            <form onSubmit={handleCreateUser}>
+            <form onSubmit={handleSubmit}>
                 {/* First Name */}
                 <FormInput
                     label="First Name"
