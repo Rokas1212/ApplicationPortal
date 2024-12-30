@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {LoginDto, SignupDto, TokenDto} from "../components/interfaces/AuthDtos.tsx";
+import {LoginDto, SignupDto, TokenDto} from "../interfaces/AuthDtos.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = `${API_BASE_URL}/Auth`;

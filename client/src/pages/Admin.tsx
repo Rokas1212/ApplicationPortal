@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormInput from "../components/Forminput";
 import {createUser} from "../services/adminService.tsx";
-import {AdminDtos, Roles} from "../components/interfaces/AdminDtos.tsx";
+import {AdminDtos, Roles} from "../interfaces/AdminDtos.tsx";
 
 
 const Admin: React.FC = () => {

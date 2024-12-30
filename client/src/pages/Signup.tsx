@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { signup } from '../services/authService';
 import FormInput from '../components/FormInput';
-import {SignupDto} from "../components/interfaces/AuthDtos.tsx";
+import {SignupDto} from "../interfaces/AuthDtos.tsx";
 
 
 const Signup: React.FC = () => {

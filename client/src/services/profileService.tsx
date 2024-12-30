@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FetchCvDto, ProfileDto} from "../components/interfaces/ProfileDtos.tsx";
+import {FetchCvDto, ProfileDto} from "../interfaces/ProfileDtos.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = `${API_BASE_URL}/Profile`;

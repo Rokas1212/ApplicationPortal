@@ -1,5 +1,5 @@
 import axios from "axios";
-import {AdminDtos} from "../components/interfaces/AdminDtos.tsx";
+import {AdminDtos} from "../interfaces/AdminDtos.tsx";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
