@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import FormInput from "../components/Forminput";
-import {signup} from "../services/authService.tsx";
 import {createUser} from "../services/adminService.tsx";
 
 export enum Roles {
@@ -33,7 +32,7 @@ const Admin: React.FC = () => {
     
     const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const { value } = e.target;
-        setFormData({...formData, role: value as Roles});
+        setFormData({...formData, role: value as Roles });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -42,7 +41,7 @@ const Admin: React.FC = () => {
             const response = await createUser(formData);
             alert(response.message); // Display success message
         } catch (err: any) {
-            alert("failed");
+            alert(err.response.message);
         }
     };
 

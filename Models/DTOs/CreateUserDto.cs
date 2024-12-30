@@ -1,13 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using ApplicationPortal.Constants;
 
 namespace ApplicationPortal.Models.DTOs;
-
-public enum RolesEnum
-{
-    Admin,
-    JobSeeker,
-    Employer
-}
 
 public class CreateUserDto
 {
@@ -24,6 +18,7 @@ public class CreateUserDto
     [Required]
     [MaxLength(30)]
     public string Password { get; set; } = string.Empty;
+
     [Required]
-    public RolesEnum Role { get; set; }
+    public string Role { get; set; } = Roles.JobSeeker;
 }

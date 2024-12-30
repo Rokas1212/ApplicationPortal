@@ -45,11 +45,17 @@ public class AdminController : ControllerBase
                 return BadRequest(new { message = "User Already Exists" });
             }
             
+            // Check if role should exist
+            if (!Roles.AllRoles.Contains(dto.Role))
+            {
+                return BadRequest(new { message = $"Invalid role: {dto.Role}" });
+            }
+            
             // Create Role If It Doesn't Exist
-            if ((await _roleManager.RoleExistsAsync(dto.Role.ToString()) == false))
+            if (!await _roleManager.RoleExistsAsync(dto.Role))
             {
                 var roleResult = await _roleManager
-                                        .CreateAsync(new IdentityRole(dto.Role.ToString()));
+                                        .CreateAsync(new IdentityRole(dto.Role));
                 if (roleResult.Succeeded == false)
                 {
                     var roleErrors = roleResult.Errors.Select(e => e.Description);
@@ -83,7 +89,7 @@ public class AdminController : ControllerBase
             }
             
             // Adding role to user
-            var addRoleToUserResult = await _userManager.AddToRoleAsync(user: user, role: dto.Role.ToString());
+            var addRoleToUserResult = await _userManager.AddToRoleAsync(user: user, role: dto.Role);
 
             // Check if role added to user
             if (addRoleToUserResult.Succeeded == false)
