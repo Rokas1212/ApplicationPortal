@@ -1,23 +1,11 @@
 import React, { useState } from "react";
 import FormInput from "../components/Forminput";
 import {createUser} from "../services/adminService.tsx";
+import {AdminDtos, Roles} from "../components/interfaces/AdminDtos.tsx";
 
-export enum Roles {
-    Admin = "Admin",
-    JobSeeker = "Job Seeker",
-    Employer = "Employer",
-}
-
-export interface CreateUserDto {
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-    role: Roles;
-}
 
 const Admin: React.FC = () => {
-    const [formData, setFormData] = useState<CreateUserDto>({
+    const [formData, setFormData] = useState<AdminDtos>({
         name: "",
         lastName: "",
         email: "",

@@ -1,25 +1,8 @@
 import axios from 'axios';
+import {LoginDto, SignupDto, TokenDto} from "../components/interfaces/AuthDtos.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = `${API_BASE_URL}/Auth`;
-
-export interface SignupDto {
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-    receiveEmails: boolean;
-}
-
-export interface LoginDto {
-    userName: string;
-    password: string;
-}
-
-export interface TokenDto {
-    accessToken: string;
-    refreshToken: string;
-}
 
 export const signup = async (data: SignupDto): Promise<{ message: string }> => {
     try {

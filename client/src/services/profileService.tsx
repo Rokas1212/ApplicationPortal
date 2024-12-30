@@ -1,21 +1,8 @@
 import axios from 'axios';
+import {FetchCvDto, ProfileDto} from "../components/interfaces/ProfileDtos.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = `${API_BASE_URL}/Profile`;
-
-export interface ProfileDto {
-    username: string;
-    name: string;
-    lastName: string;
-    emailConfirmed: boolean;
-    roles: string[];
-}
-
-export interface FetchCvDto {
-    cvFileUrl: string;
-    fileName: string;
-    id: string;
-}
 
 const token = `Bearer ${localStorage.getItem('accessToken')}`;
 

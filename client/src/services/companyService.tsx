@@ -1,16 +1,8 @@
 import axios from 'axios';
+import {FetchCompanyDto} from "../components/interfaces/CompanyDtos.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const BASE_URL = `${API_BASE_URL}/Company`;
-
-export interface FetchCompanyDto {
-    id: string;
-    companyName: string;
-    companyAddress: string;
-    websiteUrl: string;
-    companyLogoUrl: string;
-    description: string;
-}
 
 export const fetchCompanies = async (): Promise<FetchCompanyDto[]> => {
     try {

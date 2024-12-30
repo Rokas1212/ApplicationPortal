@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { LoginDto, login } from '../services/authService';
+import { login } from '../services/authService';
 import FormInput from '../components/FormInput';
+import {LoginDto} from "../components/interfaces/AuthDtos.tsx";
 
 const Login: React.FC = () => {
     const isAuthenticated = !!localStorage.getItem('accessToken');
