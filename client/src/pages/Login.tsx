@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { login } from '../services/authService';
-import FormInput from '../components/FormInput';
+import FormInput from '../components/FormInput.tsx';
 import {LoginDto} from "../interfaces/AuthDtos.tsx";
 
 const Login: React.FC = () => {

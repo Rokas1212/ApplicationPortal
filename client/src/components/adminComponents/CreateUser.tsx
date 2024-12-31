@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import FormInput from "../Forminput.tsx";
+import FormInput from "../FormInput.tsx";
 import {CreateUserDto, Roles} from "../../interfaces/AdminDtos.tsx";
 import {createUser} from "../../services/adminService.tsx";
 

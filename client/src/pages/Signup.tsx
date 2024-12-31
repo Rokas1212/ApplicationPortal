@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { signup } from '../services/authService';
-import FormInput from '../components/FormInput';
+import FormInput from '../components/FormInput.tsx';
 import {SignupDto} from "../interfaces/AuthDtos.tsx";
 
 
