@@ -4,7 +4,7 @@ export enum Roles {
     Employer = "Employer",
 }
 
-export interface AdminDtos {
+export interface CreateUserDto {
     name: string;
     lastName: string;
     email: string;

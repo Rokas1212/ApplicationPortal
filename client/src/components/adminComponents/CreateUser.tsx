@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import FormInput from "../Forminput.tsx";
-import {AdminDtos, Roles} from "../../interfaces/AdminDtos.tsx";
+import {CreateUserDto, Roles} from "../../interfaces/AdminDtos.tsx";
 import {createUser} from "../../services/adminService.tsx";
 
 const CreateUser:React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
-    const [formData, setFormData] = useState<AdminDtos>({
+    const [formData, setFormData] = useState<CreateUserDto>({
         name: "",
         lastName: "",
         email: "",
