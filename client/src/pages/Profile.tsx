@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import UploadCv from "../components/UploadCv.tsx";
-import UserInfo from "../components/UserInfo.tsx";
-import UserCvs from "../components/UserCvs.tsx";
+import UserInfo from "../components/profileComponents/UserInfo.tsx";
+import UserCvs from "../components/profileComponents/UserCvs.tsx";
+import UploadCv from "../components/profileComponents/UploadCv.tsx";
 
 const Profile: React.FC = () => {
     const [reloadFlag, setReloadFlag] = useState(false);

@@ -1,5 +1,5 @@
 import React from 'react';
-import CompanyGrid from "../components/CompanyGrid.tsx";
+import CompanyGrid from "../components/companyComponents/CompanyGrid.tsx";
 
 const Home: React.FC = () => {
     return (
