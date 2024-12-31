@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {getProfile, ProfileDto} from '../services/profileService';
-import Loading from "./Loading.tsx";
+import {ProfileDto} from "../../interfaces/ProfileDtos.tsx";
+import {getProfile} from "../../services/profileService.tsx";
+import Loading from "../Loading.tsx";
 
 const UserInfo: React.FC = () => {
     const [profile, setProfile] = useState<ProfileDto | null>(null);

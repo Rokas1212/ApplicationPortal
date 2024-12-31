@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {uploadCv} from "../services/profileService.tsx";
-import FormInput from "./Forminput.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUpload} from "@fortawesome/free-solid-svg-icons";
+import {uploadCv} from "../../services/profileService.tsx";
+import FormInput from "../Forminput.tsx";
 
 interface UploadCvProps {
     onUploadSuccess: () => void;

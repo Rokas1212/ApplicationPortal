@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {deleteCv, FetchCvDto, getCvs} from "../services/profileService.tsx";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faDownload, faTrash} from '@fortawesome/free-solid-svg-icons';
-import Loading from "./Loading.tsx";
+import {FetchCvDto} from "../../interfaces/ProfileDtos.tsx";
+import {deleteCv, getCvs} from "../../services/profileService.tsx";
+import Loading from "../Loading.tsx";
 
 interface UserCvsProps {
     reloadFlag: boolean;

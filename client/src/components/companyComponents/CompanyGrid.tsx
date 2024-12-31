@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {fetchCompanies, FetchCompanyDto} from "../services/companyService";
+import {fetchCompanies} from "../../services/companyService.tsx";
+import {FetchCompanyDto} from "../../interfaces/CompanyDtos.tsx";
 
 const CompanyGrid:React.FC =  () => {
     const [companies, setCompanies] = useState<FetchCompanyDto[] | null>(null);
