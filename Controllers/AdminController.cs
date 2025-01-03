@@ -170,4 +170,55 @@ public class AdminController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while creating the company." });
         }
      }
+
+    [HttpPost("add-employer-to-company")]
+    public async Task<IActionResult> AddEmployerToCompany(AddEmployerToCompanyDto dto)
+    {
+        try
+        {
+            var employerRole = await _dbContext.Roles
+                .Where(r => r.Name == "Employer")
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+            
+            var existingEmployer =
+                await _dbContext.UserRoles.FirstOrDefaultAsync(ur =>
+                    ur.UserId == dto.EmployerId && ur.RoleId.Equals(employerRole));
+            if (existingEmployer == null)
+            {
+                return BadRequest(new { message = "This employer does not exist." });
+            }
+            
+            var existingCompany = await _dbContext.Companies.FirstOrDefaultAsync(c => c.Id == dto.CompanyId);
+            if (existingCompany == null)
+            {
+                return BadRequest(new { message = "A company with this ID does not exist." });
+            }
+
+            var duplicateEmployer = await _dbContext.EmployerCompanies.FirstOrDefaultAsync(ec =>
+                ec.EmployerId == dto.EmployerId && ec.CompanyId == dto.CompanyId);
+            if (duplicateEmployer != null)
+            {
+                return BadRequest(new
+                    { message = $"The employer {dto.EmployerId} is already assigned to company {dto.CompanyId}" });
+            }
+
+            var employerCompany = new EmployerCompany
+            {
+                CompanyId = dto.CompanyId,
+                EmployerId = dto.EmployerId
+            };
+            
+            // Save to database
+            await _dbContext.EmployerCompanies.AddAsync(employerCompany);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new { message = "Employer successfully assigned to a company" });
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Error assigning employer to a company: {e}");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while assigning employer to the company." });
+        }
+    }
 }
