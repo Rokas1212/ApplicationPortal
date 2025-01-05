@@ -48,4 +48,43 @@ public class CompanyController : ControllerBase
                 new { message = "An error occured fetching companies" });
         }
     }
+
+    [AllowAnonymous]
+    [HttpGet("company")]
+    public async Task<IActionResult> GetCompany([FromQuery] int companyId)
+    {
+        try
+        {
+            if (companyId <= 0)
+            {
+                return BadRequest(new { message = "Invalid company ID" });
+            }
+            
+            var company = await _dbContext.Companies.FirstOrDefaultAsync(c => c.Id == companyId);
+            if (company == null)
+            {
+                _logger.LogWarning($"Company with ID {companyId} not found.");
+                return BadRequest(new { message = $"Company with the given id ({companyId}) does not exist" });
+            }
+
+            var companyResult = new FetchCompanyDto
+            {
+                Id = companyId,
+                CompanyName = company.CompanyName,
+                CompanyAddress = company.CompanyAddress,
+                Description = company.Description,
+                CompanyLogoUrl = company.CompanyLogoUrl,
+                WebsiteUrl = company.WebsiteUrl
+            };
+            
+            _logger.LogInformation($"Successfully fetched company with ID {companyId}.");
+            return Ok(companyResult);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError($"Error fetching company: {e.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { message = "An error occured fetching the company" });
+        }
+    }
 }
