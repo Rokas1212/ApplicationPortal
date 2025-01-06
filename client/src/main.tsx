@@ -10,6 +10,7 @@ import Profile from "./pages/Profile.tsx";
 import Navbar from "./components/Navbar.tsx";
 import Home from "./pages/Home.tsx";
 import Admin from "./pages/Admin.tsx";
+import Company from "./pages/Company.tsx";
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -21,6 +22,8 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="/profile" element={<Profile/>}/>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/adminPanel" element={<Admin/>}/>
+                <Route path="/company/:companyId" element={<Company />} />
+                <Route path="/company" element={<div>Please provide a company ID</div>} />
             </Routes>
         </BrowserRouter>
     </StrictMode>,

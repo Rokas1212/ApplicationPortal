@@ -9,6 +9,17 @@ export const fetchCompanies = async (): Promise<FetchCompanyDto[]> => {
         const response = await axios.get(`${BASE_URL}`);
         return response.data;
     } catch (error: any) {
-        throw new Error(error.response?.data?.message || "An unexpected error occured")
+        throw new Error(error.response?.data?.message || "An unexpected error occured");
     }
-}
+};
+
+export const fetchCompany = async (id: number): Promise<FetchCompanyDto> => {
+    try {
+        const response = await axios.get(`${BASE_URL}/Company`, {
+            params: {companyId: id}
+        });
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "An unexpected error occured");
+    }
+};

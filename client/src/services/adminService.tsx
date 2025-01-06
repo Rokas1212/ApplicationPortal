@@ -1,5 +1,5 @@
 import axios from "axios";
-import {AdminDtos} from "../interfaces/AdminDtos.tsx";
+import {CreateUserDto} from "../interfaces/AdminDtos.tsx";
 
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -7,7 +7,7 @@ const BASE_URL = `${API_BASE_URL}/admin`;
 
 const token = `Bearer ${localStorage.getItem('accessToken')}`;
 
-export const createUser = async (data: AdminDtos): Promise<{ message: string }> => {
+export const createUser = async (data: CreateUserDto): Promise<{ message: string }> => {
     try {
         const response = await axios.post(`${BASE_URL}/create-user`, data , {
             headers: {

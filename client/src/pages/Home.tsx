@@ -1,11 +1,11 @@
 import React from 'react';
-import CompanyGrid from "../components/companyComponents/CompanyGrid.tsx";
+import CompaniesGrid from "../components/companyComponents/CompaniesGrid.tsx";
 
 const Home: React.FC = () => {
     return (
         <div className="container mt-4">
             <h1>Companies</h1>
-            <CompanyGrid/>  
+            <CompaniesGrid/>  
         </div>
     );
 }
