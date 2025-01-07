@@ -36,12 +36,12 @@ const CompanyInfo:React.FC<CompanyInfoProps> = ( {id}) => {
                 <h1 className="h3 mb-0">Company Profile</h1>
             </div>
             <div className="row card-body" style={{ flexWrap: 'nowrap', gap: '20px' }}>
-                <div className="col-4 d-flex justify-content-center align-items-center">
+                <div className="col-4 d-flex justify-content-center align-items-center w-auto">
                     <img
                         className="card-img"
                         src={company?.companyLogoUrl}
                         alt="company logo"
-                        style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }}
+                        style={{ width: '250px', height: '250px', border:"1px solid black", borderRadius: '8px', objectFit: "cover" }}
                     />
                 </div>
                 <div className="col-8">
@@ -55,16 +55,21 @@ const CompanyInfo:React.FC<CompanyInfoProps> = ( {id}) => {
                         <div className="col-sm-2 text-nowrap">
                             <strong>Description:</strong>
                         </div>
-                        <div className="col-sm-9">{company?.description}</div>
+                        <div className="col-sm-9">{company?.description ? company.description : "The company has not provided a description."}</div>
                     </div>
                     <div className="row mb-3">
                         <div className="col-sm-2 text-nowrap">
                             <strong>Website:</strong>
                         </div>
                         <div className="col-sm-9">
-                            <a href={company?.websiteUrl} target="_blank" rel="noopener noreferrer">
-                                {company?.websiteUrl}
-                            </a>
+                            {company?.websiteUrl 
+                            ? 
+                                <a href={company?.websiteUrl} target="_blank" rel="noopener noreferrer">
+                                    {company?.websiteUrl}
+                                </a>
+                            :
+                                "The company does not have a website."
+                            }
                         </div>
                     </div>
                     <div className="row mb-3">
