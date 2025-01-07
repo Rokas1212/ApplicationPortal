@@ -10,7 +10,7 @@ const Company:React.FC = () => {
     return (
         <div className="container mt-5">
             <div className="row">
-                <div className="col-md-6">
+                <div className="col">
                     <CompanyInfo id={id}/>
                 </div>
             </div>

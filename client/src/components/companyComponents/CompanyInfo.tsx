@@ -29,37 +29,50 @@ const CompanyInfo:React.FC<CompanyInfoProps> = ( {id}) => {
             </div>
         );
     }
-    
+
     return (
         <div className="card shadow h-100">
             <div className="card-header bg-light-subtle text-dark-emphasis">
                 <h1 className="h3 mb-0">Company Profile</h1>
-                <img className="card-img" src={company?.companyLogoUrl} alt="company logo"/>
             </div>
-            <div className="card-body">
-                <div className="row mb-3">
-                    <div className="col-sm-3">
-                        <strong>Name:</strong>
-                    </div>
-                    <div className="col-sm-9">{company?.companyName}</div>
+            <div className="row card-body" style={{ flexWrap: 'nowrap', gap: '20px' }}>
+                <div className="col-4 d-flex justify-content-center align-items-center">
+                    <img
+                        className="card-img"
+                        src={company?.companyLogoUrl}
+                        alt="company logo"
+                        style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }}
+                    />
                 </div>
-                <div className="row mb-3">
-                    <div className="col-sm-3">
-                        <strong>Description:</strong>
+                <div className="col-8">
+                    <div className="row mb-3">
+                        <div className="col-sm-2 text-nowrap">
+                            <strong>Name:</strong>
+                        </div>
+                        <div className="col-sm-9">{company?.companyName}</div>
                     </div>
-                    <div className="col-sm-9">{company?.description}</div>
-                </div>
-                <div className="row mb-3">
-                    <div className="col-sm-3">
-                        <strong>Website:</strong>
+                    <div className="row mb-3">
+                        <div className="col-sm-2 text-nowrap">
+                            <strong>Description:</strong>
+                        </div>
+                        <div className="col-sm-9">{company?.description}</div>
                     </div>
-                    <div className="col-sm-9"><a href={company?.websiteUrl}>Website</a></div>
-                </div>
-                <div className="row mb-3">
-                    <div className="col-sm-3">
-                        <strong>Address:</strong>
+                    <div className="row mb-3">
+                        <div className="col-sm-2 text-nowrap">
+                            <strong>Website:</strong>
+                        </div>
+                        <div className="col-sm-9">
+                            <a href={company?.websiteUrl} target="_blank" rel="noopener noreferrer">
+                                {company?.websiteUrl}
+                            </a>
+                        </div>
                     </div>
-                    <div className="col-sm-9">{company?.companyAddress}</div>
+                    <div className="row mb-3">
+                        <div className="col-sm-2 text-nowrap">
+                            <strong>Address:</strong>
+                        </div>
+                        <div className="col-sm-9">{company?.companyAddress}</div>
+                    </div>
                 </div>
             </div>
         </div>
